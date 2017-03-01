@@ -33,8 +33,13 @@ int main(int argc, char** argv) {
     //Prepare for Luhn encoding
     cout<<"A random number created in Prep for Luhn Digit:"<<endl;
     prpLuhn(crdCard,SIZE-2);
+    
     //Output the preLuhn credit card
-    cout<<crdCard<<endl;
+    for(int i =0; i < SIZE; i++){
+        cout <<crdCard[i];
+    }
+    cout <<endl;
+        
     //Now create a function that fills the last digit
     //using the Luhn Algorithm
     cout<<"The random number with Luhn Encoding: "<<endl;
@@ -44,7 +49,11 @@ int main(int argc, char** argv) {
         cout <<"Error: Invalid Card Number!\n"; 
     }
     else{
-        cout <<crdCard <<endl;
+        for(int i =0; i < SIZE; i++){
+            cout <<crdCard[i];
+        }
+        cout <<endl;
+        
     }
     
     //Exit Stage Right
@@ -63,7 +72,7 @@ void prpLuhn(int cc[],int n){
 }
 
 char rndDgit(){
-    return rand()%10+48;
+    return rand()%10;
 }
 
 bool Luhn(int cc[], int size){
