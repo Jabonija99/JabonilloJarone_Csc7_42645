@@ -12,6 +12,8 @@ using namespace std;
 
 //Global Constants
 
+
+
 //Function Prototypes
 char rndDgit();
 void prpLuhn(int[],int);
