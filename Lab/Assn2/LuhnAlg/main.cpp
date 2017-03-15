@@ -31,7 +31,7 @@ int *genCC(CRDCARD);
 void flipDig(int[],int);
 bool validCC(int[],int);
 
-char rndDgit();
+int rndDgit();
 void prpLuhn(int[],int);
 void Luhn(int[],int);
 void outAry(int[],int);
@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
    
     int card = 0;
     
+    
+    
     cout <<"Credit Card\t\t"
             <<"Number\t\t"
             <<"Validation\n";
@@ -51,9 +53,8 @@ int main(int argc, char** argv) {
     for(int i = 0; i < 10; i++){
         card = rand()%5;
         
-        cout <<"Error1\n";
         int *crdCard = genCC(static_cast<CRDCARD>(card));
-        cout <<"Error2\n";
+        
         
         int size = 0;
         if(card == AEXPRESS){
@@ -136,7 +137,7 @@ void prpLuhn(int cc[],int n){
     }
 }
 
-char rndDgit(){
+int rndDgit(){
     return rand()%10;
 }
 
@@ -189,13 +190,13 @@ void outAry(int cc[], int size){
 
 void flipDig(int cc[], int size){
     //Flip random digit
-    int digit = rand()%size-1;
+    int digit = rand()%size-2;
     
     cout <<"Error5\n";
     //Flip digit with first slot
-    //int temp = cc[digit];
-    //cc[digit] = cc[0];
-    //cc[0] = temp;
+    int temp = cc[digit];
+    cc[digit] = cc[0];
+    cc[0] = temp;
     cout <<"Error6\n";
 }
 
