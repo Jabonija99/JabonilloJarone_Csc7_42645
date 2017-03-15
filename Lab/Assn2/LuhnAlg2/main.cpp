@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
         //Generate numbers
         int size = genCC(static_cast<CrdCard>(card), cc);
         
-        //Flip random digit digit
+        //Flip every other number
         if(i%2==0){
             flipDig(cc, size);
         }
