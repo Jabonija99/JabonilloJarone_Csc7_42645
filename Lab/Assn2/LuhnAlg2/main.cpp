@@ -41,11 +41,13 @@ int main(int argc, char** argv) {
     srand(static_cast<unsigned int>(time(0)));
     
     int card;
+    int valid = 0;
+    int invalid = 0;
     const int CAP = 20;
     
     //Prompt
     cout <<left <<setw(30) <<"Credit Card"
-            <<setw(24) <<"Number"
+            <<setw(30) <<"Number"
             <<setw(30) <<"Validation" <<endl;
     
     for(int i = 0; i < 10000; i ++){
@@ -79,12 +81,10 @@ int main(int argc, char** argv) {
                        
         }
         
-        
-        
         //Generate numbers
         int size = genCC(static_cast<CrdCard>(card), cc);
         
-        //Flip every other digit
+        //Flip random digit digit
         if(i%2==0){
             flipDig(cc, size);
         }
@@ -93,12 +93,16 @@ int main(int argc, char** argv) {
         
         if(validCC(cc,size)){
             cout <<setw(30)<<"Valid" <<endl;
+            valid++;
         }
         else{
             cout <<setw(30)<<"Invalid" <<endl;
+            invalid++;
         }
     }
     
+    cout <<endl <<"End result: Valid #s:" <<valid 
+            <<" Invalid #s:" <<invalid <<endl;
     
 
     return 0;
@@ -188,10 +192,12 @@ void flipDig(int cc[], int size){
     if(size>0){
         //Flip random digit
         int digit = rand()%(size-2);
-        
+ 
+        //Swap digits
         int temp = cc[digit];
         cc[digit] = cc[0];
         cc[0] = temp;
+    
     }
 }
 
@@ -200,7 +206,7 @@ bool validCC(int cc[], int size){
     
     if(size>0){
         //Retrieve last digit
-        int checkDig = cc[size];
+        int checkDig = cc[size-1];
         
         //Calc Luhn
         int cardNum[size];
@@ -234,6 +240,8 @@ bool validCC(int cc[], int size){
         //Calculate check digit
         digit = (total*9)%10;
 
+        //Output both digits
+        cout <<"Check#: " <<checkDig <<"; Result: " <<digit <<"; ";
 
         //Check digit
         if(checkDig == digit){
