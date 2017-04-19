@@ -21,6 +21,7 @@ using namespace std;
  */
 bool compare(char[],char[], int);
 char* check(char[],char[], int);
+
 void output(char[], int);
 void cls();
 
@@ -179,45 +180,6 @@ char* check(char code[], char guess[], int size){
             result[i] = 'x';
         }
     }
-    
-    /*
-    int star = 0;  //Flag for correct
-    int o = 0;     //Flag for correct but wrong
-    int x = 0;     //Flag for wrong
-    
-    for(int i = 0; i < size; i++){
-        for(int j = 0; j < size; j++){
-            if(j == i && code[i] == guess[j]){
-                star++;
-                j=size;
-            }
-            else if(j != i && code[i] == guess[j]){
-                o++;
-                j=size;
-            }
-            else if(j == 3 && code[i] != guess[j]){
-                x++;
-                j=size;
-            }
-        }
-    }
-    
-    
-    
-    for(int i = 0; i < size; i++){
-        if(star > 0){
-            result[i] = '*';
-            star--;
-        }
-        else if(star <=0 && o > 0){
-            result[i] = 'o';
-            o--;
-        }
-        else{
-            result[i] = 'x';
-        }  
-    }
-    */
 
     return result;
 }
