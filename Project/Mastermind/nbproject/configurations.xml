@@ -4,7 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>CpuAi.h</itemPath>
+      <itemPath>Game.h</itemPath>
+      <itemPath>GameAi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +14,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>CpuAi.cpp</itemPath>
+      <itemPath>Game.cpp</itemPath>
+      <itemPath>GameAi.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -38,9 +40,13 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="CpuAi.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="CpuAi.h" ex="false" tool="3" flavor2="0">
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameAi.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameAi.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -65,9 +71,13 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="CpuAi.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="CpuAi.h" ex="false" tool="3" flavor2="0">
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameAi.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameAi.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
