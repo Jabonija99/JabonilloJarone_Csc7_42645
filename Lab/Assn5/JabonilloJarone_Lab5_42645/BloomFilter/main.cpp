@@ -54,14 +54,15 @@ int main(int argc, char** argv) {
 
         if(ans[0] == '1'){   
             bloomfilter1(words, wordsize);
+            cls();
         }
         else if(ans[0] == '2'){   
             bloomfilter2(words, wordsize);
+            cls();
         }
         else if(ans[0] == '3'){   
             quit = true;
         }
-        cls();
     }     
     
     //Close file
@@ -81,8 +82,11 @@ void bloomfilter1(string words[], int wordsize){
     int hashsize = 10;
     int hashes[hashsize]={};
      
+    //Number of positive results
+    int numResult = wordsize/2;
+    
     //Hash the first 100 words
-    for(int i = 0; i < (wordsize/2); i++){
+    for(int i = 0; i < numResult; i++){
         hashes[0] = RSHash(words[i])%nBits;
         hashes[1] = JSHash(words[i])%nBits;
         hashes[2] = PJWHash(words[i])%nBits;
@@ -109,9 +113,13 @@ void bloomfilter1(string words[], int wordsize){
     }
     
     //Hash and check all 200 words
-    bool positive = true;
+    bool positive;
+    int pos = 0;
+    int neg = 0;
     
     for(int i = 0; i < wordsize; i++){
+        positive = true;
+        
         hashes[0] = RSHash(words[i])%nBits;
         hashes[1] = JSHash(words[i])%nBits;
         hashes[2] = PJWHash(words[i])%nBits;
@@ -145,11 +153,17 @@ void bloomfilter1(string words[], int wordsize){
         //Output result
         if(positive){
             cout <<"Word [" <<i <<"] = Positive!\n";
+            pos++;
         }
         else{
             cout <<"Word [" <<i <<"] = Negative!\n";
+            neg++;
         }      
     }
+    
+    cout <<"\nResult:\n"
+            <<"Positives [" <<pos <<"/" <<wordsize <<"]\n"
+            <<"Negatives [" <<neg <<"/" <<wordsize <<"]\n";
     
     pause();
 }
@@ -164,8 +178,11 @@ void bloomfilter2(string words[], int wordsize){
     int hashsize = 2;
     int hashes[hashsize]={};
      
+    //Number of positive results
+    int numResult = wordsize/2;
+    
     //Hash the first 100 words
-    for(int i = 0; i < (wordsize/2); i++){
+    for(int i = 0; i < numResult; i++){
         hashes[0] = RSHash(words[i])%nBits;
         hashes[1] = FNVHash(words[i])%nBits;
         
@@ -184,9 +201,13 @@ void bloomfilter2(string words[], int wordsize){
     }
     
     //Hash and check all 200 words
-    bool positive = true;
+    bool positive;
+    int pos = 0;
+    int neg = 0;
     
     for(int i = 0; i < wordsize; i++){
+        positive = true;
+        
         hashes[0] = RSHash(words[i])%nBits;
         hashes[1] = FNVHash(words[i])%nBits;
         
@@ -212,11 +233,17 @@ void bloomfilter2(string words[], int wordsize){
         //Output result
         if(positive){
             cout <<"Word [" <<i <<"] = Positive!\n";
+            pos++;
         }
         else{
             cout <<"Word [" <<i <<"] = Negative!\n";
+            neg++;
         }
     }
+    
+    cout <<"\nResult:\n"
+            <<"Positives [" <<pos <<"/" <<wordsize <<"]\n"
+            <<"Negatives [" <<neg <<"/" <<wordsize <<"]\n";
     
     pause();
 }
