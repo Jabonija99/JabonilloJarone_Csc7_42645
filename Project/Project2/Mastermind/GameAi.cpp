@@ -19,10 +19,21 @@
 GameAi::GameAi(int size){
     
     this->size = size;              //Size for array
-    tries = 10;                     //Attempts to guess
+    tries = 100;                    //Attempts to guess
+    attempts = 0;                   //Attempts made
     ai = new char[this->size];      //Ai code
     player = new char[this->size];  //Player array
     result = new char[this->size];  //Resulting array
+    
+    prevGuess = new char*[tries];
+    for(int i = 0; i < tries; i++){
+        prevGuess[i] = new char[this->size];
+    }
+    
+    prevResult = new char*[tries];
+    for(int i = 0; i < tries; i++){
+        prevResult[i] = new char[this->size];
+    }
 }
 
 GameAi::~GameAi(){
@@ -33,6 +44,20 @@ GameAi::~GameAi(){
     delete player;
     result = NULL;
     delete result;
+    
+    for(int i = 0; i < tries; i++){
+        prevGuess[i] = NULL;
+        delete [] prevGuess[i];
+    }
+    prevGuess = NULL;
+    delete [] prevGuess;
+    
+    for(int i = 0; i < tries; i++){
+        prevResult[i] = NULL;
+        delete [] prevResult[i];
+    }
+    prevResult = NULL;
+    delete [] prevResult;
 }
 
 void GameAi::start(){
@@ -44,9 +69,10 @@ void GameAi::start(){
     srand(static_cast<unsigned int>(time(0)));
     
     do{
+        //Reset values
         cls();
         game = true;
-        tries = 10;
+        attempts = 0;
         bool input;
         
         do{
@@ -59,7 +85,7 @@ void GameAi::start(){
             
             //Validate code
             for(int i = 0; i < size; i++){
-                if(ans[i] - '0' < 0 || ans[i]-'0' > 9 ){
+                if(ans[i] - '0' < -1 || ans[i]-'0' > 10 ){
                     input = false;
                 }
             }
@@ -91,33 +117,50 @@ void GameAi::start(){
         
        //Cpu guesses
         std::cout <<"Cpu's turn...\n=====================\n";
-        std::cout <<std::left <<std::setw(15) <<"Guess" <<"Result\n";
+        std::cout <<std::left <<std::setw(10) <<"Attempts"
+                <<std::setw(14) <<"Guess" <<"Result\n";
         
         do{
-            //Cpu makes a random guess
-            for(int i = 0; i < size; i++){
-                ai[i] = (rand()%10)+'0';
-            }
+            //Generate guess
+            ai = guess(prevGuess, prevResult, attempts);
             
-            //Output ai guess
-            output(ai, size);
-            //Output result
+            //Check result
             result = check(ai, player, size);
-            std::cout <<"\t\t";
-            output(result, size);
-            std::cout <<std::endl;
             
-            //Compare arrays
-            if(!compare(ai, player, size)){
-                //Reduce tries
-                tries--;
-            }
-            else{
+            //If ai guesses correct
+            if(compare(ai, player, size)){
                 //Raise game flag
                 game = false;
             }
+            else{
+                //Store guess and result
+                prevGuess[attempts] = ai;
+                prevResult[attempts] = result;
+            }
             
-        }while(tries > 0 && game == true);
+            //Output ai guess
+            std::cout <<"[Attempt:" <<++attempts <<"]";
+            output(ai, size);
+            
+            //Output result
+            if(attempts < 10){
+                std::cout <<"\t\t";
+            }
+            else{  
+                std::cout <<"\t";
+            }
+            output(result, size);
+            std::cout <<std::endl;
+            
+        }while(attempts < tries && game == true);
+        
+        /*
+        std::cout <<"AI Guesses========\n";
+        for(int i = 0 ; i < tries; i++){
+            std::cout <<"Attempt" <<i <<": ";
+            output(prevGuess[i], size);
+            std::cout <<"\n";
+        }*/
         
         //Output result
         if(game == true){
@@ -212,6 +255,18 @@ char* GameAi::check(char code[], char guess[], int size){
 
     //Return answer
     return ans;
+}
+
+char* GameAi::guess(char** prevGuess , char** result , int attempt){
+    //Make a random guess
+    char* aiGuess = new char[this->size];
+    
+    //Cpu makes a random guess
+    for(int i = 0; i < size; i++){
+        aiGuess[i] = (rand()%10)+'0';
+    }
+    
+    return aiGuess;
 }
 
 void GameAi::output(char array[], int size){

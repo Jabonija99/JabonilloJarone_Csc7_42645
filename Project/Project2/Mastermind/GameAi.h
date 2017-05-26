@@ -18,12 +18,17 @@ class GameAi {
 private:
     int size; //Array size
     int tries; //Tries
+    int attempts; //Attempts made
     char* ai; //Ai array
     char* player; //Player array
     char* result; //Array for results
+    char** prevGuess; // Array for previous guesses
+    char** prevResult; //Array for previous results
     
     bool compare(char[], char[], int); //Compares arrays
     char* check(char[], char[], int); //Checks and returns result
+    char* guess(char**, char**, int); //Gen and return comp guess
+    
     void output(char[], int); //Output array
     void cls(); //Clear screen
     

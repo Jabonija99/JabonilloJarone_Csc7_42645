@@ -91,8 +91,8 @@ void Game::start(){
                 output(result, size);
                 
                 
-                //std::cout <<"Answer:";
-                //output(ai, size);
+                std::cout <<"Answer:";
+                output(ai, size);
             }
             else{
                 game = false;
