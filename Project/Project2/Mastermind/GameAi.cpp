@@ -198,12 +198,18 @@ bool GameAi::compare(char code[], char guess[], int size){
 char* GameAi::check(char code[], char guess[], int size){
     //Compares and returns the resulting array
     char* ans =  new char[size]; //Array for resulting answer
+    int* flagCode = new int[size]; //Array for confirmed code checks{0,1,2}
     int index = 0;              //Index for array
     bool correct = false;       //Flag for correct
     bool almost = false;        //Flag for correct but wrong spot
     
     int star = 0;               //Counter for correct
-    int o = 0;                  //Counter for correct but wrong
+    int o = 0;                  //Counter for correct but wrong spot
+    
+    //Set flags
+    for(int i = 0; i < size; i++){
+        flagCode[i]=0;
+    }
     
 
     //Check through each line of the code
@@ -212,21 +218,27 @@ char* GameAi::check(char code[], char guess[], int size){
         correct = false;
         almost = false;
         
-        //Check through guess
+        //Check through each line of the guess 
         for(int j = 0; j < size; j++){
-            //If the guess matches the code and spot
-            if(j == i && code[i] == guess[j]){
-                //Raise correct flag
-                correct = true;
-                almost = false;
-            }
-            else if(!correct && code[i] == guess[j]){   
+            
+            //If the spot has not been checked and confirmed
+            if(flagCode[j] < 2){
+                
+                //If the guess matches the code and spot
+                if(j == i && code[i] == guess[j]){
+                    //Raise correct flag
+                    correct = true;
+                    almost = false;
+                    flagCode[j]= 2;
+                }
                 //If the guess matches the code but not the spot
-                //Raise almost flag
-                almost = true;
+                else if(!correct && code[i] == guess[j]){
+                    //Raise almost flag
+                    almost = true;
+                    flagCode[j] = 1;
+                }
             }
         }
-        
         
         //Increment counter based on result
         if(correct){
@@ -236,7 +248,6 @@ char* GameAi::check(char code[], char guess[], int size){
             o++;
         }
     }
-    
     
     //Insert results into the answer array
     for(int i = 0; i < size; i++){
@@ -252,19 +263,74 @@ char* GameAi::check(char code[], char guess[], int size){
             ans[i] = 'x';
         }
     }
+    
+    delete flagCode;
 
     //Return answer
     return ans;
 }
 
 char* GameAi::guess(char** prevGuess , char** result , int attempt){
-    //Make a random guess
-    char* aiGuess = new char[this->size];
+    //int for number of digits
+    int nums = 10; 
+    //Array for ai's guess
+    char* aiGuess = new char[this->size];   
+    //Flag for wrong(0)/maybe(1)/good(2)values
+    int* potentials = new int[nums];
+    
+    //Set potential flags to default: maybe
+    for(int i = 0; i < nums; i++){
+        potentials[i] = 1;
+    }
+    
+    
+    //If its the first guess
+    if(attempt < 1){
+        //Output generic start
+        for(int i = 0 ; i < size; i++){
+            aiGuess[i]=i+'0';
+        }
+    }
+    else{
+        //Scan through results for wrong numbers
+        for(int i = 0; i < size; i++){
+            bool wrong = true;
+            
+            //Flag if all numbers are wrong
+            for(int j = 0; j < size; j++){
+                if(result[i][j] != 'x'){
+                    wrong = false;
+                }
+            }
+            //If all numbers are wrong
+            if(wrong){
+                //Go through the guess and flag wrong numbers
+                for(int j = 0 ; j < size; i++){
+                    int spot = prevGuess[i][j];
+                    potentials[spot] = 0;
+                }
+            }
+        }
+        
+        //Make random guesses based on incorrect results
+        for(int i = 0; i < size; i++){
+            int num = (rand()%10)+'0';
+            
+            if(potentials[num]!= 0){
+                aiGuess[i] = num;
+            }
+        }
+    }
+    
+    
     
     //Cpu makes a random guess
+    /*
     for(int i = 0; i < size; i++){
         aiGuess[i] = (rand()%10)+'0';
-    }
+    }*/
+    
+    delete potentials;
     
     return aiGuess;
 }

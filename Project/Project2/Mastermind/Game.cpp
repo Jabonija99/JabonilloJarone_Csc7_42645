@@ -90,7 +90,7 @@ void Game::start(){
                 std::cout <<"Result:";
                 output(result, size);
                 
-                
+                // [DEBUG] Output answer
                 std::cout <<"Answer:";
                 output(ai, size);
             }
@@ -142,12 +142,18 @@ bool Game::compare(char code[], char guess[], int size){
 char* Game::check(char code[], char guess[], int size){
     //Compares and returns the resulting array
     char* ans =  new char[size]; //Array for resulting answer
+    int* flagCode = new int[size]; //Array for confirmed code checks{0,1,2}
     int index = 0;              //Index for array
     bool correct = false;       //Flag for correct
     bool almost = false;        //Flag for correct but wrong spot
     
     int star = 0;               //Counter for correct
     int o = 0;                  //Counter for correct but wrong spot
+    
+    //Set flags
+    for(int i = 0; i < size; i++){
+        flagCode[i]=0;
+    }
     
 
     //Check through each line of the code
@@ -156,18 +162,25 @@ char* Game::check(char code[], char guess[], int size){
         correct = false;
         almost = false;
         
-        //Check through guess
+        //Check through each line of the guess 
         for(int j = 0; j < size; j++){
-            //If the guess matches the code and spot
-            if(j == i && code[j] == guess[i]){
-                //Raise correct flag
-                correct = true;
-                almost = false;
-            }
-            //If the guess matches the code but not the spot
-            else if(!correct && code[j] == guess[i]){
-                //Raise almost flag
-                almost = true;
+            
+            //If the spot has not been checked and confirmed
+            if(flagCode[j] < 2){
+                
+                //If the guess matches the code and spot
+                if(j == i && code[i] == guess[j]){
+                    //Raise correct flag
+                    correct = true;
+                    almost = false;
+                    flagCode[j]= 2;
+                }
+                //If the guess matches the code but not the spot
+                else if(!correct && code[i] == guess[j]){
+                    //Raise almost flag
+                    almost = true;
+                    flagCode[j] = 1;
+                }
             }
         }
         
@@ -194,6 +207,8 @@ char* Game::check(char code[], char guess[], int size){
             ans[i] = 'x';
         }
     }
+    
+    delete flagCode;
 
     //Return answer
     return ans;
